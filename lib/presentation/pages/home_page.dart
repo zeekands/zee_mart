@@ -7,7 +7,9 @@ import 'package:zee_mart/core/theme/colors/const_colors.dart';
 import 'package:zee_mart/core/utils/extentions.dart';
 import 'package:zee_mart/data/models/product_model.dart';
 import 'package:zee_mart/presentation/blocs/cubit/get_products_cubit.dart';
+import 'package:zee_mart/presentation/pages/create_product_page.dart';
 import 'package:zee_mart/presentation/pages/product_detail_page.dart';
+import 'package:zee_mart/presentation/pages/search_product_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -18,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  final int _counter = 0;
   var _page = 1;
   bool _hasMoreData = true;
   bool _isLoadingMore = false;
@@ -29,9 +31,15 @@ class _HomePageState extends State<HomePage> {
     context.read<GetProductsCubit>().getProducts(_page);
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  void goToCreateProduct() {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(builder: (context) => const CreateProductPage()),
+    )
+        .then((value) {
+      if (value != null) {
+        _onRefresh();
+      }
     });
   }
 
@@ -58,8 +66,13 @@ class _HomePageState extends State<HomePage> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(vertical: 10),
             ),
-            onChanged: (value) {
-              // Handle search input
+            readOnly: true,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SearchProductPage(),
+                ),
+              );
             },
           ),
         ),
@@ -67,13 +80,21 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
-              // Handle cart button action
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('This feature is not available yet'),
+                ),
+              );
             },
           ),
           IconButton(
-            icon: const Icon(Icons.chat),
+            icon: const Icon(Icons.person),
             onPressed: () {
-              // Handle chat button action
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Zee Mart created by Zeekands Technologies (Aziz Kandias)'),
+                ),
+              );
             },
           ),
         ],
@@ -182,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       // Product Price
                                       Text(
-                                        '${products[index].harga ?? 0}'.toCurrencyFormat(),
+                                        '${products[index].price ?? 0}'.toCurrencyFormat(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -305,7 +326,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       // Product Price
                                       Text(
-                                        '${products[index].harga ?? 0}'.toCurrencyFormat(),
+                                        '${products[index].price ?? 0}'.toCurrencyFormat(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -337,7 +358,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: goToCreateProduct,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
@@ -372,10 +393,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _handleItemTap(BuildContext context, ProductModel product) {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       MaterialPageRoute(
-        builder: (context) => ProductDetailPage(productId: product.id.toInt()),
+        builder: (context) => ProductDetailPage(
+          productId: product.id.toInt(),
+        ),
       ),
+    )
+        .then(
+      (value) {
+        if (value != null) {
+          _onRefresh();
+        }
+      },
     );
   }
 }

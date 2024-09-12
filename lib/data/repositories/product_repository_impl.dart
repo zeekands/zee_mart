@@ -30,4 +30,44 @@ class ProductRepositoryImpl implements ProductRepository {
       return ErrorHandling.handleException(e);
     }
   }
+
+  @override
+  Future<Either<Failure, ProductModel>> deleteProductById(id) async {
+    try {
+      final product = await productDataSource.deleteProductById(id);
+      return Right(product);
+    } catch (e) {
+      return ErrorHandling.handleException(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductModel>> createProduct(ProductModel product) async {
+    try {
+      final data = await productDataSource.createProduct(product);
+      return Right(data);
+    } catch (e) {
+      return ErrorHandling.handleException(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ProductModel>>> searchProduct(String query) async {
+    try {
+      final products = await productDataSource.searchProduct(query);
+      return Right(products);
+    } catch (e) {
+      return ErrorHandling.handleException(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductModel>> updateProduct(ProductModel product) async {
+    try {
+      final data = await productDataSource.updateProduct(product);
+      return Right(data);
+    } catch (e) {
+      return ErrorHandling.handleException(e);
+    }
+  }
 }

@@ -45,16 +45,16 @@ class ErrorHandling {
       case DioExceptionType.badResponse:
         return Left(
           ServerFailure(
-            exception.response?.data['message'] ?? exception.message ?? 'Unknown Dio Exception',
-            exception.response?.data['error_code'] ?? exception.response?.statusCode ?? 400,
+            exception.message ?? 'Unknown Dio Exception',
+            exception.response?.statusCode ?? 400,
           ),
         );
       case DioExceptionType.unknown:
       default:
         return Left(
           ServerFailure(
-            exception.response?.data['message'] ?? exception.message ?? 'Unknown Dio Exception',
-            exception.response?.data['error_code'] ?? exception.response?.statusCode ?? 500,
+            exception.message ?? 'Unknown Dio Exception',
+            exception.response?.statusCode ?? 500,
           ),
         );
     }

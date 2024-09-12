@@ -4,14 +4,14 @@ class ProductModel {
   final String sku;
   final String name;
   final String description;
-  final int weight;
-  final int width;
-  final int length;
-  final int height;
+  final dynamic weight;
+  final dynamic width;
+  final dynamic length;
+  final dynamic height;
   final String image;
-  final int harga;
+  final dynamic price;
   final String id;
-  final int categoryID;
+  final dynamic categoryID;
 
   ProductModel({
     this.categoryId = 0,
@@ -24,7 +24,7 @@ class ProductModel {
     this.length = 0,
     this.height = 0,
     this.image = '',
-    this.harga = 0,
+    this.price = 0,
     this.id = '',
     this.categoryID = 0,
   });
@@ -42,7 +42,7 @@ class ProductModel {
       length: json['length'] ?? 0,
       height: json['height'] ?? 0,
       image: json['image'] ?? '',
-      harga: json['harga'] ?? 0,
+      price: json['harga'] ?? 0,
       id: json['id'] ?? '',
       categoryID: json['CategoryId'] ?? 0,
     );
@@ -61,7 +61,7 @@ class ProductModel {
       'length': length,
       'height': height,
       'image': image,
-      'harga': harga,
+      'price': price,
       'id': id,
       'CategoryId': categoryID,
     };

@@ -12,7 +12,7 @@ class CategoryModel {
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
       createdAt: json['createdAt'] ?? '',
-      category: json['category'] ?? 'Unknown Category',
+      category: json['categoryName'] ?? 'Unknown Category',
       id: int.tryParse(json['id'] ?? '0') ?? 0, // Convert String to int
     );
   }
