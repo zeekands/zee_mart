@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +5,6 @@ import 'package:zee_mart/core/env/env.dart';
 import 'package:zee_mart/core/services/di_service.dart';
 import 'package:zee_mart/core/services/network_services.dart';
 import 'package:zee_mart/core/theme/colors/const_colors.dart';
-import 'package:zee_mart/data/models/product_model.dart';
 import 'package:zee_mart/presentation/blocs/cubit/create_product_cubit.dart';
 import 'package:zee_mart/presentation/blocs/cubit/delete_product_cubit.dart';
 import 'package:zee_mart/presentation/blocs/cubit/edit_product_cubit.dart';

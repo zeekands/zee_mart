@@ -18,7 +18,6 @@ class EditProductPage extends StatefulWidget {
 class _EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
-  late final TextEditingController _categoryNameController;
   late final TextEditingController _skuController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _weightController;
@@ -35,7 +34,6 @@ class _EditProductPageState extends State<EditProductPage> {
 
     // Initialize controllers with existing product data
     _nameController = TextEditingController(text: widget.product.name);
-    _categoryNameController = TextEditingController(text: widget.product.categoryName);
     _skuController = TextEditingController(text: widget.product.sku);
     _descriptionController = TextEditingController(text: widget.product.description);
     _weightController = TextEditingController(text: widget.product.weight.toString());

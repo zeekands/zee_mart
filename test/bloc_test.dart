@@ -1,106 +1,67 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart' as flutter_test;
-import 'package:injectable/injectable.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:zee_mart/core/app_core.dart';
-import 'package:zee_mart/core/services/di_service.dart';
 import 'package:zee_mart/data/models/product_model.dart';
-import 'package:zee_mart/domain/repositories/product_repository.dart';
-import 'package:zee_mart/presentation/blocs/cubit/edit_product_cubit.dart';
+import 'package:zee_mart/domain/usecases/create_product_usecase.dart';
+import 'package:zee_mart/presentation/blocs/cubit/create_product_cubit.dart';
 
-@LazySingleton(as: ProductRepository)
-class MockProductRepository extends Mock implements ProductRepository {}
+// Mock class for CreateProductUsecase
+class MockCreateProductUsecase extends Mock implements CreateProductUsecase {
+  @override
+  Future<Either<Failure, ProductModel>> execute(ProductModel product) async {
+    if (product.id == '1') {
+      return right(product);
+    } else {
+      return left(const ServerFailure('Error message', 500));
+    }
+  }
+}
 
 void main() {
-  late EditProductCubit editProductCubit;
-  late MockProductRepository mockProductRepository;
+  late CreateProductCubit cubit;
+  late MockCreateProductUsecase mockCreateProductUsecase;
 
-  flutter_test.setUp(() {
-    configureDependencies();
-
-    mockProductRepository = MockProductRepository();
-    editProductCubit = EditProductCubit(locator());
+  setUp(() {
+    mockCreateProductUsecase = MockCreateProductUsecase();
+    cubit = CreateProductCubit(mockCreateProductUsecase);
   });
 
-  flutter_test.test('initial state is initial', () {
-    flutter_test.expect(editProductCubit.state, flutter_test.equals(const EditProductState.initial()));
+  setUpAll(() {});
+
+  group('CreateProductCubit', () {
+    final product = ProductModel(id: '1', name: 'Product Name', price: 100.0);
+    final product2 = ProductModel(id: '2', name: 'Product Name', price: 100.0);
+
+    const failure = ServerFailure('Error message', 500);
+
+    test('initial state is CreateProductState.initial()', () {
+      expect(cubit.state, const CreateProductState.initial());
+    });
+
+    blocTest<CreateProductCubit, CreateProductState>(
+      'emits [loading, loaded] when createProduct succeeds',
+      build: () {
+        return cubit;
+      },
+      act: (cubit) => cubit.createProduct(product),
+      expect: () => [
+        const CreateProductState.loading(),
+        CreateProductState.loaded(product),
+      ],
+    );
+
+    blocTest<CreateProductCubit, CreateProductState>(
+      'emits [loading, error] when createProduct fails',
+      build: () {
+        return cubit;
+      },
+      act: (cubit) => cubit.createProduct(product2),
+      expect: () => [
+        const CreateProductState.loading(),
+        const CreateProductState.error(failure),
+      ],
+    );
   });
-
-  blocTest<EditProductCubit, EditProductState>(
-    'emits [loading, loaded] when editProduct is successful',
-    build: () {
-      when(() => mockProductRepository.updateProduct(any())).thenAnswer(
-        (_) async => Right(ProductModel(
-          id: "1",
-          name: 'Updated Product',
-          categoryId: 1,
-          categoryName: 'Category',
-          sku: 'SKU',
-          description: 'Updated Description',
-          weight: 150.0,
-          width: 15.0,
-          height: 15.0,
-          length: 15.0,
-          image: 'updated_image_url',
-          price: 150.0,
-        )),
-      );
-      return editProductCubit;
-    },
-    act: (cubit) => cubit.editProduct(ProductModel(
-        id: "1",
-        name: 'Updated Product',
-        categoryId: 1,
-        categoryName: 'Category',
-        sku: 'SKU',
-        description: 'Updated Description',
-        weight: 150.0,
-        width: 15.0,
-        height: 15.0,
-        length: 15.0,
-        image: 'updated_image_url',
-        price: 150.0)),
-    expect: () => [
-      const EditProductState.loading(),
-      EditProductState.loaded(ProductModel(
-          id: "1",
-          name: 'Updated Product',
-          categoryId: 1,
-          categoryName: 'Category',
-          sku: 'SKU',
-          description: 'Updated Description',
-          weight: 150.0,
-          width: 15.0,
-          height: 15.0,
-          length: 15.0,
-          image: 'updated_image_url',
-          price: 150.0)),
-    ],
-  );
-
-  blocTest<EditProductCubit, EditProductState>(
-    'emits [loading, error] when editProduct fails',
-    build: () {
-      when(() => mockProductRepository.updateProduct(any())).thenThrow(Exception('Failed to update product'));
-      return editProductCubit;
-    },
-    act: (cubit) => cubit.editProduct(ProductModel(
-        id: "1",
-        name: 'Updated Product',
-        categoryId: 1,
-        categoryName: 'Category',
-        sku: 'SKU',
-        description: 'Updated Description',
-        weight: 150.0,
-        width: 15.0,
-        height: 15.0,
-        length: 15.0,
-        image: 'updated_image_url',
-        price: 150.0)),
-    expect: () => [
-      const EditProductState.loading(),
-      const EditProductState.error(ServerFailure("message", 500)),
-    ],
-  );
 }

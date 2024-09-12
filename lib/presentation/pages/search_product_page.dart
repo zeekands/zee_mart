@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:zee_mart/core/theme/colors/const_colors.dart';
 import 'package:zee_mart/core/utils/extentions.dart';
+import 'package:zee_mart/data/models/product_model.dart';
 import 'package:zee_mart/presentation/blocs/cubit/search_product_cubit.dart';
 import 'package:zee_mart/presentation/pages/product_detail_page.dart';
+import 'package:zee_mart/presentation/widgets/item_product_widget.dart';
 
 class SearchProductPage extends StatefulWidget {
   const SearchProductPage({Key? key}) : super(key: key);
@@ -52,55 +55,62 @@ class _SearchProductPageState extends State<SearchProductPage> {
               ),
             ),
             onFieldSubmitted: (query) {
-              context.read<SearchProductCubit>().searchProduct(query);
+              if (query.isNotEmpty) {
+                context.read<SearchProductCubit>().searchProduct(query);
+              }
             },
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<SearchProductCubit, SearchProductState>(
-              builder: (context, state) {
-                return state.when(
-                  initial: () => const Center(child: Text('Enter a product to search')),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  loaded: (products) {
-                    if (products.isEmpty) {
-                      return const Center(child: Text('No products found'));
-                    }
-                    return ListView.builder(
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        return ListTile(
-                          title: Text(product.name, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-                          subtitle: Text('${product.price}'.toCurrencyFormat(),
-                              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: kMainColor)),
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(product.image),
-                          ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BlocBuilder<SearchProductCubit, SearchProductState>(
+          builder: (context, state) {
+            return state.when(
+              initial: () => const Center(child: Text('Enter a product to search')),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              loaded: (products) {
+                if (products.isEmpty) {
+                  return const Center(child: Text('No products found'));
+                }
+                return SingleChildScrollView(
+                  child: StaggeredGrid.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 4,
+                    crossAxisSpacing: 4,
+                    children: [
+                      for (var product in products)
+                        GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ProductDetailPage(productId: product.id.toInt())),
-                            ).then((value) {
-                              if (value != null) {
-                                context.read<SearchProductCubit>().searchProduct(_searchController.text);
-                              }
-                            });
+                            _handleItemTap(context, product);
                           },
-                        );
-                      },
-                    );
-                  },
-                  error: (failure) => Center(child: Text('Error: ${failure.code}')),
+                          child: ItemProductWidget(size: MediaQuery.sizeOf(context), product: product),
+                        ),
+                    ],
+                  ),
                 );
               },
-            ),
-          ),
-        ],
+              error: (failure) => Center(child: Text('Error: ${failure.code}')),
+            );
+          },
+        ),
       ),
+    );
+  }
+
+  void _handleItemTap(BuildContext context, ProductModel product) {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) => ProductDetailPage(
+          productId: product.id.toInt(),
+        ),
+      ),
+    )
+        .then(
+      (value) {
+        if (value != null) {}
+      },
     );
   }
 }

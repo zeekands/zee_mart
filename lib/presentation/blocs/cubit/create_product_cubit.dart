@@ -11,7 +11,7 @@ part 'create_product_cubit.freezed.dart';
 @lazySingleton
 class CreateProductCubit extends Cubit<CreateProductState> {
   final CreateProductUsecase _createProductUsecase;
-  CreateProductCubit(this._createProductUsecase) : super(CreateProductState.initial());
+  CreateProductCubit(this._createProductUsecase) : super(const CreateProductState.initial());
 
   void createProduct(ProductModel product) async {
     emit(const CreateProductState.loading());

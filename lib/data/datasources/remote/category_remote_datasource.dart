@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zee_mart/core/services/network_services.dart';
 import 'package:zee_mart/data/models/category_model.dart';

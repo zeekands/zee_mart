@@ -13,14 +13,14 @@ Padding actionSheetContent(
       mainAxisSize: MainAxisSize.min, // Menyusutkan tinggi BottomSheet sesuai konten
       children: [
         const Text(
-          'Konfirmasi Aksi',
+          'Confirmation',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 15),
-        const Text('Apakah Anda yakin ingin menghapus data produk?'),
+        const Text('Are you sure want to delete this product?'),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +63,7 @@ Padding actionSheetContent(
                   ),
                   child: const Center(
                     child: Text(
-                      'Ya',
+                      'Yes',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white, // Teks warna putih

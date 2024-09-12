@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 import 'package:zee_mart/core/app_core.dart';
 import 'package:zee_mart/data/models/product_model.dart';
 

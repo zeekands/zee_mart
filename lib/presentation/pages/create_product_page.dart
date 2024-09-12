@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zee_mart/core/theme/colors/const_colors.dart';
-import 'package:zee_mart/core/utils/extentions.dart';
 import 'package:zee_mart/data/models/category_model.dart';
 import 'package:zee_mart/data/models/product_model.dart';
 import 'package:zee_mart/presentation/blocs/cubit/create_product_cubit.dart';
@@ -19,7 +16,6 @@ class CreateProductPage extends StatefulWidget {
 class _CreateProductPageState extends State<CreateProductPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _categoryNameController = TextEditingController();
   final TextEditingController _skuController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
