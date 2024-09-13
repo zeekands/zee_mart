@@ -1,16 +1,19 @@
-# zee_mart
+## Klontong, the Mobile Project
 
-A new Flutter project.
+Flutter Project For Toko klontong CRUD Product Operation, using Rest Api mock
 
-## Getting Started
+## Tech Stack & Dependency
+1. Flutter (Channel stable, 3.22.2, on macOS 14.6.1 23G93 darwin-arm64, locale en-ID)
+2. BLOC
+3. Get_it
+4. Injectable
+5. Clean Architecture
+6. DIO
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How To Install
+1. Add .env file that attached through email
+2. Clone this project to your local machine
+3. Run flutter pub get
+4. Run dart run build_runner build --delete-conflicting-outputs
+5. Run App (debug)
