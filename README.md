@@ -18,4 +18,4 @@ Flutter Project For Toko klontong CRUD Product Operation, using Rest Api mock
 4. Clone this project to your local machine
 5. Run flutter pub get
 6. Run dart run build_runner build --delete-conflicting-outputs
-7. Run App (debug)
+7. Ready to run the app
