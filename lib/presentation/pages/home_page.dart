@@ -121,8 +121,20 @@ class _HomePageState extends State<HomePage> {
               loading: () => const Center(child: CircularProgressIndicator()),
               loaded: (products) {
                 if (products.isEmpty) {
-                  return const Center(
-                    child: Text("No products available"),
+                  return Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("No products available"),
+                        SizedBox(height: size.height * 0.02),
+                        //refresh button
+                        ElevatedButton(
+                          onPressed: _onRefresh,
+                          child: const Text('Refresh', style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
                   );
                 }
                 return RefreshIndicator(

@@ -42,7 +42,7 @@ class ProductModel {
       length: json['length'] ?? 0,
       height: json['height'] ?? 0,
       image: json['image'] ?? '',
-      price: json['harga'] ?? 0,
+      price: json['price'] ?? 0,
       id: json['id'] ?? '',
       categoryID: json['CategoryId'] ?? 0,
     );
